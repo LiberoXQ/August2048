@@ -27,7 +27,7 @@
 		    android:layout_height="wrap_content"
 		    android:layout_weight="1"
 		    android:layout_gravity="right"
-		    android:background="@color/pink"
+		    android:background="@drawable/corner_pink"
 		    android:layout_marginRight="5dp"
 		    android:orientation="vertical" >
 		    <TextView
@@ -54,7 +54,7 @@
 		    android:layout_height="wrap_content"
 		    android:layout_weight="1"
 		    android:layout_gravity="right"
-		    android:background="@color/pink"
+		    android:background="@drawable/corner_pink"
 		    android:layout_marginLeft="5dp"
 		    android:orientation="vertical" >
 		    <TextView
@@ -92,7 +92,7 @@
         android:id="@+id/activity_main_ll2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/activity_main_grid"
+        android:layout_below="@id/activity_main_ll1"
         android:orientation="horizontal" >
 		<TextView
 		    android:id="@+id/activity_main_annoncement"
@@ -112,7 +112,7 @@
         	android:layout_gravity="center_vertical"
         	android:layout_marginRight="10dp"
         	android:layout_marginLeft="5dp"
-        	android:background="@color/orange"
+        	android:background="@drawable/corner_orange"
         	android:text="@string/activity_main_start"
         	android:textSize="20sp"
         	android:textColor="@color/white"

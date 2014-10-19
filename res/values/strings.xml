@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">八月脸2048</string>
+    <string name="app_name">八月脸</string>
     <string name="zero">0</string>
     <string name="activity_main_title">八月脸</string>
 	<string name="activity_main_score">得分：</string>

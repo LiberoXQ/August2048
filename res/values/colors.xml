@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="blue">#6699FF</color><!-- 蓝色 -->
+    <color name="blue">#20C0FF</color><!-- 蓝色 -->
     <color name="orange">#FF6600</color><!-- 橙色 -->
-    <color name="pink">#FFC0CB</color><!-- 粉色  -->
+    <color name="pink">#FFAEC9</color><!-- 粉色  -->
     <color name="white">#FFFFFF</color><!-- 白色 -->
 </resources>
