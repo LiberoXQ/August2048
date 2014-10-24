@@ -1,4 +1,5 @@
 package xq.august2048.activity;
+
 /**
  * This Package is just for Activities.
  */
@@ -7,9 +8,9 @@ package xq.august2048.activity;
  * Package for Activities.
  */
 
-
 /**
  * MainActivity
+ * 
  * @author XQ
  * @description The entrance Activity
  */

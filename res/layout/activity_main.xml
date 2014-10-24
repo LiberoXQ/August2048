@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/blue" >
+    android:background="@color/pink" >
 	   <LinearLayout 
 	    android:id="@+id/activity_main_ll1"
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_marginRight="10dp"
             android:text="@string/activity_main_title"
             android:textSize="30sp"
-            android:textColor="@color/pink"
+            android:textColor="@color/white"
             android:textStyle="bold" />
 		<LinearLayout
 		    android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
 		        android:layout_gravity="center"
 		        android:text="@string/activity_main_score"
 		        android:textSize="15sp"
-		        android:textColor="@color/white"
+		        android:textColor="@color/pink"
 		        android:textStyle="bold" />
 		    <TextView
 		        android:id="@+id/activity_main_scores"
@@ -46,7 +46,7 @@
 		        android:layout_gravity="center"
 		        android:text="@string/zero"
 		        android:textSize="15sp"
-		        android:textColor="@color/white"
+		        android:textColor="@color/pink"
 		        android:textStyle="bold" />
 		</LinearLayout>
 		<LinearLayout
@@ -64,7 +64,7 @@
 		        android:layout_gravity="center"
 		        android:text="@string/activity_main_best"
 		        android:textSize="15sp"
-		        android:textColor="@color/white"
+		        android:textColor="@color/pink"
 		        android:textStyle="bold" />
 		    <TextView
 		        android:id="@+id/activity_main_bests"
@@ -73,7 +73,7 @@
 		        android:layout_gravity="center"
 		        android:text="@string/zero"
 		        android:textSize="15sp"
-		        android:textColor="@color/white"
+		        android:textColor="@color/pink"
 		        android:textStyle="bold" />
 		</LinearLayout>
     </LinearLayout>
@@ -87,7 +87,8 @@
         android:horizontalSpacing="10dp"
         android:numColumns="4"
         android:descendantFocusability="blocksDescendants"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:scrollbars="none" />
     <LinearLayout 
         android:id="@+id/activity_main_ll2"
         android:layout_width="match_parent"
@@ -113,7 +114,7 @@
         	android:layout_marginRight="10dp"
         	android:layout_marginLeft="5dp"
         	android:background="@drawable/corner_orange"
-        	android:text="@string/activity_main_start"
+        	android:text="@string/activity_main_restart"
         	android:textSize="20sp"
         	android:textColor="@color/white"
         	android:gravity="center" />
