@@ -2,6 +2,7 @@ package xq.august2048.activity;
 
 import xq.august2048.R;
 import xq.august2048.adapter.GridAdapter;
+import xq.august2048.entity.Cards;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -9,14 +10,17 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnGestureListener
+{
 	private TextView title, score, scores, best, bests, annoncement;
 	private Button start;
 	private GridView gridView;
@@ -25,6 +29,8 @@ public class MainActivity extends Activity {
 	private Context con;
 	private int[] img;
 	private long mExitTime;
+	
+	private Cards cards;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,45 +67,147 @@ public class MainActivity extends Activity {
 		start.setTypeface(fontFace);
 		gridView = (GridView) findViewById(R.id.activity_main_grid);
 
-		img = new int[]
-				{
-				R.drawable.blank,//0
-				R.drawable.one,//1
-				R.drawable.two,//2
-				R.drawable.three,//3
-				R.drawable.four,//4
-				R.drawable.five,//5
-				R.drawable.six,//6
-				R.drawable.seven,//7
-				R.drawable.eight,//8
-				R.drawable.nine,//9
-				R.drawable.ten,//10
-				R.drawable.eleven,//11
-				R.drawable.blank,//12
-				R.drawable.blank,//13
-				R.drawable.blank,//14
-				R.drawable.blank,//15
-				};
+//		img = new int[]
+//				{
+//				R.drawable.blank,//0
+//				R.drawable.one,//1
+//				R.drawable.two,//2
+//				R.drawable.three,//3
+//				R.drawable.four,//4
+//				R.drawable.five,//5
+//				R.drawable.six,//6
+//				R.drawable.seven,//7
+//				R.drawable.eight,//8
+//				R.drawable.nine,//9
+//				R.drawable.ten,//10
+//				R.drawable.eleven,//11
+//				R.drawable.blank,//12
+//				R.drawable.blank,//13
+//				R.drawable.blank,//14
+//				R.drawable.blank,//15
+//				};
+		cards = Cards.getInstance();
+		img = exchange(cards.getCard());
 		con = this;
+		
 		gridAdapter = new GridAdapter(con, img);
 		// Remove Click Animation
 		gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
 		gridView.setAdapter(gridAdapter);
 	}
 
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if ((System.currentTimeMillis() - mExitTime) > 2000) {
+	private int[] exchange(int[][] card)
+	{
+		int[] img = new int[16];
+		for(int i = 0; i < 16; i++)
+		{
+			switch(card[i / 4][i % 4])
+			{
+			case 0:
+				img[i] = R.drawable.blank;
+				break;
+			case 1:
+				img[i] = R.drawable.one;
+				break;
+			case 2:
+				img[i] = R.drawable.two;
+				break;
+			case 3:
+				img[i] = R.drawable.three;
+				break;
+			case 4:
+				img[i] = R.drawable.four;
+				break;
+			case 5:
+				img[i] = R.drawable.five;
+				break;
+			case 6:
+				img[i] = R.drawable.six;
+				break;
+			case 7:
+				img[i] = R.drawable.seven;
+				break;
+			case 8:
+				img[i] = R.drawable.eight;
+				break;
+			case 9:
+				img[i] = R.drawable.nine;
+				break;
+			case 10:
+				img[i] = R.drawable.ten;
+				break;
+			case 11:
+				img[i] = R.drawable.eleven;
+				break;
+			default:
+				img[i] = R.drawable.blank;
+				break;
+			}
+		}
+		return img;
+	}
+	
+	public boolean onKeyDown(int keyCode, KeyEvent event) 
+	{
+		if (keyCode == KeyEvent.KEYCODE_BACK) 
+		{
+			if ((System.currentTimeMillis() - mExitTime) > 2000) 
+			{
 				// Object mHelperUtils;
 				Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
 				mExitTime = System.currentTimeMillis();
 
-			} else {
+			} 
+			else 
+			{
 				finish();
 				System.exit(0);
 			}
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public boolean onDown(MotionEvent e) 
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onShowPress(MotionEvent e) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent e) 
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) 
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onLongPress(MotionEvent e) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) 
+	{
+		// TODO Auto-generated method stub
+		
+		return false;
 	}
 }
