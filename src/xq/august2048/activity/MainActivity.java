@@ -3,8 +3,8 @@ package xq.august2048.activity;
 import xq.august2048.R;
 import xq.august2048.adapter.GridAdapter;
 import xq.august2048.entity.Cards;
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -17,7 +17,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -98,7 +97,7 @@ public class MainActivity extends Activity implements OnGestureListener, OnTouch
 //				R.drawable.blank,//15
 //				};
 		cards = Cards.getInstance();
-		img = exchange(cards.getCard());
+		img = exchange(cards.getCard(), img);
 		con = this;
 		
 		gridAdapter = new GridAdapter(con, img);
@@ -113,9 +112,10 @@ public class MainActivity extends Activity implements OnGestureListener, OnTouch
 		gestureDetector = new GestureDetector(this);
 	}
 
-	private int[] exchange(int[][] card)
+	private int[] exchange(int[][] card , int[] img)
 	{
-		int[] img = new int[16];
+		if(img == null)
+			img = new int[16];
 		for(int i = 0; i < 16; i++)
 		{
 			switch(card[i / 4][i % 4])
@@ -178,7 +178,7 @@ public class MainActivity extends Activity implements OnGestureListener, OnTouch
 			else 
 			{
 				finish();
-				System.exit(0);
+//				System.exit(0);
 			}
 			return true;
 		}
@@ -224,29 +224,49 @@ public class MainActivity extends Activity implements OnGestureListener, OnTouch
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) 
 	{
 		// TODO Auto-generated method stub
-		if(Math.abs(e1.getX() - e2.getX()) - Math.abs(e1.getY() - e2.getY()) > FLING_MIN_GAP)
+		if(cards.getPlaying() == false)
+			return false;
+		else
 		{
-			if(e1.getX() - e2.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY)  
-			{  
-				Toast.makeText(this, "左滑", Toast.LENGTH_SHORT).show();
-			}  
-			else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) 
-			{   
-				Toast.makeText(this, "右滑", Toast.LENGTH_SHORT).show();
-			}  
-		}
-		else if(Math.abs(e1.getY() - e2.getY()) - Math.abs(e1.getX() - e2.getX()) > FLING_MIN_GAP)
-		{
-			if(e1.getY() - e2.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY)  
-			{  
-				Toast.makeText(this, "上滑", Toast.LENGTH_SHORT).show();
-			}  
-			else if (e2.getY() - e1.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) 
-			{   
-				Toast.makeText(this, "下滑", Toast.LENGTH_SHORT).show();
+			if(Math.abs(e1.getX() - e2.getX()) - Math.abs(e1.getY() - e2.getY()) > FLING_MIN_GAP)
+			{
+				if(e1.getX() - e2.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY)  
+				{  
+//					Toast.makeText(this, "左滑", Toast.LENGTH_SHORT).show();
+					cards.stepLeft();
+				}  
+				else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) 
+				{   
+//					Toast.makeText(this, "右滑", Toast.LENGTH_SHORT).show();
+					cards.stepRight();
+				}  
 			}
+			else if(Math.abs(e1.getY() - e2.getY()) - Math.abs(e1.getX() - e2.getX()) > FLING_MIN_GAP)
+			{
+				if(e1.getY() - e2.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY)  
+				{  
+//					Toast.makeText(this, "上滑", Toast.LENGTH_SHORT).show();
+					cards.stepUp();
+				}  
+				else if (e2.getY() - e1.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) 
+				{   
+//					Toast.makeText(this, "下滑", Toast.LENGTH_SHORT).show();
+					cards.stepDown();
+				}
+			}
+			img = exchange(cards.getCard(), img);
+			gridAdapter.notifyDataSetChanged();
+			scores.setText(cards.getScore() + "");
+			if(cards.whetherSuccessful() == true)
+			{
+				
+			}
+			else if(cards.whetherFailed() == false)
+			{
+				
+			}
+			return false;
 		}
-		return false;
 	}
 
 	@Override
@@ -257,6 +277,7 @@ public class MainActivity extends Activity implements OnGestureListener, OnTouch
 		return super.dispatchTouchEvent(ev);
 	}
 	
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouch(View v, MotionEvent event) 
 	{
