@@ -10,17 +10,25 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.GestureDetector.OnGestureListener;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnGestureListener
+public class MainActivity extends Activity implements OnGestureListener, OnTouchListener
 {
+	int FLING_MIN_GAP = 100;
+	int FLING_MIN_DISTANCE = 200;
+	double FLING_MIN_VELOCITY = 0.2;
+	
 	private TextView title, score, scores, best, bests, annoncement;
 	private Button start;
 	private GridView gridView;
@@ -31,9 +39,12 @@ public class MainActivity extends Activity implements OnGestureListener
 	private long mExitTime;
 	
 	private Cards cards;
+	
+	private GestureDetector gestureDetector;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) 
+	{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		// Remove Title
@@ -94,6 +105,12 @@ public class MainActivity extends Activity implements OnGestureListener
 		// Remove Click Animation
 		gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
 		gridView.setAdapter(gridAdapter);
+		
+		Display display = getWindowManager().getDefaultDisplay();  
+		FLING_MIN_DISTANCE = display.getWidth() / 2;
+		FLING_MIN_GAP = FLING_MIN_DISTANCE / 2;
+		
+		gestureDetector = new GestureDetector(this);
 	}
 
 	private int[] exchange(int[][] card)
@@ -207,7 +224,43 @@ public class MainActivity extends Activity implements OnGestureListener
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) 
 	{
 		// TODO Auto-generated method stub
-		
+		if(Math.abs(e1.getX() - e2.getX()) - Math.abs(e1.getY() - e2.getY()) > FLING_MIN_GAP)
+		{
+			if(e1.getX() - e2.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY)  
+			{  
+				Toast.makeText(this, "左滑", Toast.LENGTH_SHORT).show();
+			}  
+			else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) 
+			{   
+				Toast.makeText(this, "右滑", Toast.LENGTH_SHORT).show();
+			}  
+		}
+		else if(Math.abs(e1.getY() - e2.getY()) - Math.abs(e1.getX() - e2.getX()) > FLING_MIN_GAP)
+		{
+			if(e1.getY() - e2.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY)  
+			{  
+				Toast.makeText(this, "上滑", Toast.LENGTH_SHORT).show();
+			}  
+			else if (e2.getY() - e1.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) 
+			{   
+				Toast.makeText(this, "下滑", Toast.LENGTH_SHORT).show();
+			}
+		}
 		return false;
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) 
+	{
+		// TODO Auto-generated method stub
+		gestureDetector.onTouchEvent(ev);
+		return super.dispatchTouchEvent(ev);
+	}
+	
+	@Override
+	public boolean onTouch(View v, MotionEvent event) 
+	{
+		// TODO Auto-generated method stub
+		return gestureDetector.onTouchEvent(event);
 	}
 }
