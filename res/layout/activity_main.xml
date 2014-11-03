@@ -113,7 +113,7 @@
         	android:layout_gravity="center_vertical"
         	android:layout_marginRight="10dp"
         	android:layout_marginLeft="5dp"
-        	android:background="@drawable/corner_orange"
+        	android:background="@drawable/button_start"
         	android:text="@string/activity_main_restart"
         	android:textSize="20sp"
         	android:textColor="@color/white"

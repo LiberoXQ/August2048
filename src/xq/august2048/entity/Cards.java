@@ -1,10 +1,12 @@
 package xq.august2048.entity;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Cards 
+@SuppressWarnings("serial")
+public class Cards implements Serializable
 {
-	private static int RETRY = 100;
+	private static int RETRY = 50;
 	private static Cards cards = null;
 	private int[][] card = null;
 	private Random rand = null;
@@ -96,7 +98,7 @@ public class Cards
 			flag = false;
 			for(int j = 3; j >= 0; j--)
 			{
-				if(flag ==false)
+				if(flag == false)
 				{
 					if(card[i][j] == 0)
 						continue;
@@ -108,6 +110,7 @@ public class Cards
 					else if(temp[point + 1] == card[i][j])
 					{
 						temp[point + 1]++;
+						flag = true;
 					}
 					else
 					{
@@ -154,6 +157,7 @@ public class Cards
 					else if(temp[point - 1] == card[j][i])
 					{
 						temp[point - 1]++;
+						flag = true;
 					}
 					else
 					{
@@ -200,6 +204,7 @@ public class Cards
 					else if(temp[point + 1] == card[j][i])
 					{
 						temp[point + 1]++;
+						flag = true;
 					}
 					else
 					{
@@ -265,7 +270,6 @@ public class Cards
 		}
 	}
 	
-	
 	public boolean whetherFailed()
 	{
 		if(card == null)
@@ -304,6 +308,16 @@ public class Cards
 		}
 	}
 	
+	public void exchage(int[] img)
+	{
+		for(int i = 0; i < 4; i++)
+		{
+			for(int j = 0; j < 4; j++)
+			{
+				card[i][j] = img[i * 4 + j];
+			}
+		}
+	}
 	
 	private Cards()
 	{
@@ -322,13 +336,13 @@ public class Cards
 		getRandom();
 	}
 	
-	
 	private boolean getRandom()
 	{
 		int x = rand.nextInt(4);
 		int y = rand.nextInt(4);
 		int retry = 0;
 		double p = rand.nextDouble();
+		
 		for(retry = 0; card[x][y] != 0 && retry < Cards.RETRY; retry++)
 		{
 			x = rand.nextInt(4);
@@ -363,20 +377,6 @@ public class Cards
 				card[x][y] = 10;
 		
 			return true;
-		}
-	}
-
-	public static void main(String[] args) 
-	{
-		Cards cards = Cards.getInstance();
-		cards.stepLeft();
-		for(int i = 0; i < 4; i++)
-		{
-			for(int j = 0; j < 4; j++)
-			{
-				System.out.print(cards.card[i][j]);
-			}
-			System.out.println("");
 		}
 	}
 }

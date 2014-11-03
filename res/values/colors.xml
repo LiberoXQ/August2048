@@ -4,4 +4,5 @@
     <color name="orange">#FF6600</color><!-- 橙色 -->
     <color name="pink">#FFAEC9</color><!-- 粉色  -->
     <color name="white">#FFFFFF</color><!-- 白色 -->
+    <color name="red">#FF0000</color><!-- 红色 -->
 </resources>

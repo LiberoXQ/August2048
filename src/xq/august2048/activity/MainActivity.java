@@ -1,32 +1,38 @@
 package xq.august2048.activity;
 
+import java.io.ObjectOutputStream;
+import java.util.Set;
+
 import xq.august2048.R;
 import xq.august2048.adapter.GridAdapter;
 import xq.august2048.entity.Cards;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnGestureListener, OnTouchListener
+public class MainActivity extends Activity implements OnClickListener, OnGestureListener, OnTouchListener
 {
-	int FLING_MIN_GAP = 100;
-	int FLING_MIN_DISTANCE = 200;
-	double FLING_MIN_VELOCITY = 0.2;
+	private int FLING_MIN_GAP = 100;
+	private int FLING_MIN_DISTANCE = 200;
+	private double FLING_MIN_VELOCITY = 0.1;
 	
 	private TextView title, score, scores, best, bests, annoncement;
 	private Button start;
@@ -40,6 +46,8 @@ public class MainActivity extends Activity implements OnGestureListener, OnTouch
 	private Cards cards;
 	
 	private GestureDetector gestureDetector;
+	
+	private SharedPreferences sp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -75,28 +83,13 @@ public class MainActivity extends Activity implements OnGestureListener, OnTouch
 		annoncement.setTypeface(fontFace);
 		start = (Button) findViewById(R.id.activity_main_start);
 		start.setTypeface(fontFace);
+		start.setOnClickListener(this);
 		gridView = (GridView) findViewById(R.id.activity_main_grid);
 
-//		img = new int[]
-//				{
-//				R.drawable.blank,//0
-//				R.drawable.one,//1
-//				R.drawable.two,//2
-//				R.drawable.three,//3
-//				R.drawable.four,//4
-//				R.drawable.five,//5
-//				R.drawable.six,//6
-//				R.drawable.seven,//7
-//				R.drawable.eight,//8
-//				R.drawable.nine,//9
-//				R.drawable.ten,//10
-//				R.drawable.eleven,//11
-//				R.drawable.blank,//12
-//				R.drawable.blank,//13
-//				R.drawable.blank,//14
-//				R.drawable.blank,//15
-//				};
-		cards = Cards.getInstance();
+		if(savedInstanceState == null)
+			cards = Cards.getInstance();
+		else
+			cards = (Cards)savedInstanceState.getSerializable("cards");
 		img = exchange(cards.getCard(), img);
 		con = this;
 		
@@ -106,10 +99,14 @@ public class MainActivity extends Activity implements OnGestureListener, OnTouch
 		gridView.setAdapter(gridAdapter);
 		
 		Display display = getWindowManager().getDefaultDisplay();  
-		FLING_MIN_DISTANCE = display.getWidth() / 2;
-		FLING_MIN_GAP = FLING_MIN_DISTANCE / 2;
+		FLING_MIN_DISTANCE = display.getWidth() / 4;
+		FLING_MIN_GAP = FLING_MIN_DISTANCE;
 		
 		gestureDetector = new GestureDetector(this);
+		
+		scores.setText(cards.getScore() + "");
+		sp = this.getSharedPreferences("august", MODE_PRIVATE);
+		bests.setText(sp.getInt("best", 0) + "");
 	}
 
 	private int[] exchange(int[][] card , int[] img)
@@ -162,6 +159,23 @@ public class MainActivity extends Activity implements OnGestureListener, OnTouch
 			}
 		}
 		return img;
+	}
+	
+	@Override
+	public void onClick(View v) 
+	{
+		// TODO Auto-generated method stub
+		switch (v.getId())
+		{
+		case R.id.activity_main_start:
+			cards.init();
+			img = exchange(cards.getCard(), img);
+			gridAdapter.notifyDataSetChanged();
+			scores.setText(cards.getScore() + "");
+			break;
+		default:
+			break;
+		}
 	}
 	
 	public boolean onKeyDown(int keyCode, KeyEvent event) 
@@ -259,11 +273,15 @@ public class MainActivity extends Activity implements OnGestureListener, OnTouch
 			scores.setText(cards.getScore() + "");
 			if(cards.whetherSuccessful() == true)
 			{
-				
+				sp = this.getSharedPreferences("august", MODE_PRIVATE);
+				if(sp.getInt("best", 0) < cards.getScore())
+					sp.edit().putInt("best", cards.getScore()).commit();
 			}
 			else if(cards.whetherFailed() == false)
 			{
-				
+				sp = this.getSharedPreferences("august", MODE_PRIVATE);
+				if(sp.getInt("best", 0) < cards.getScore())
+					sp.edit().putInt("best", cards.getScore()).commit();
 			}
 			return false;
 		}
@@ -283,5 +301,37 @@ public class MainActivity extends Activity implements OnGestureListener, OnTouch
 	{
 		// TODO Auto-generated method stub
 		return gestureDetector.onTouchEvent(event);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("cards", cards);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) 
+	{
+		// TODO Auto-generated method stub
+		super.onRestoreInstanceState(savedInstanceState);
+		cards = (Cards)savedInstanceState.getSerializable("cards");
+		img = exchange(cards.getCard(), img);
+		gridAdapter = new GridAdapter(con, img);
+		gridView.setAdapter(gridAdapter);
+		scores.setText(cards.getScore() + "");
+	}
+	
+	@Override
+	protected void onDestroy() 
+	{
+		// TODO Auto-generated method stub
+		super.onDestroy();
+//		String image = img.toString();
+//		Log.e("image", image);
+//		sp = this.getSharedPreferences("august", MODE_PRIVATE);
+//		sp.edit().putString("image", image).commit();
+		System.exit(0);
 	}
 }
