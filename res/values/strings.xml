@@ -7,4 +7,7 @@
 	<string name="activity_main_start">开始游戏</string>
 	<string name="activity_main_restart">重新开始</string>
 	<string name="activity_main_annoncement">欢迎参加极限挑战</string>
+	<string name="activity_main_playing">正在被虐</string>
+	<string name="activity_main_win">八月厨的胜利</string>
+	<string name="activity_main_failed">都是世界的错</string>
 </resources>

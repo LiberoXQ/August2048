@@ -1,8 +1,5 @@
 package xq.august2048.activity;
 
-import java.io.ObjectOutputStream;
-import java.util.Set;
-
 import xq.august2048.R;
 import xq.august2048.adapter.GridAdapter;
 import xq.august2048.entity.Cards;
@@ -14,7 +11,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.GestureDetector;
@@ -34,7 +30,7 @@ public class MainActivity extends Activity implements OnClickListener, OnGesture
 	private int FLING_MIN_DISTANCE = 200;
 	private double FLING_MIN_VELOCITY = 0.1;
 	
-	private TextView title, score, scores, best, bests, annoncement;
+	private TextView title, score, scores, best, bests, annoncement, win;
 	private Button start;
 	private GridView gridView;
 
@@ -81,6 +77,8 @@ public class MainActivity extends Activity implements OnClickListener, OnGesture
 		bests.setTypeface(fontFace);
 		annoncement = (TextView) findViewById(R.id.activity_main_annoncement);
 		annoncement.setTypeface(fontFace);
+		win = (TextView) findViewById(R.id.activity_main_whetherwin);
+		win.setTypeface(fontFace);
 		start = (Button) findViewById(R.id.activity_main_start);
 		start.setTypeface(fontFace);
 		start.setOnClickListener(this);
@@ -107,6 +105,9 @@ public class MainActivity extends Activity implements OnClickListener, OnGesture
 		scores.setText(cards.getScore() + "");
 		sp = this.getSharedPreferences("august", MODE_PRIVATE);
 		bests.setText(sp.getInt("best", 0) + "");
+		
+		if(savedInstanceState != null)
+			onRestoreInstanceState(savedInstanceState);
 	}
 
 	private int[] exchange(int[][] card , int[] img)
@@ -172,6 +173,9 @@ public class MainActivity extends Activity implements OnClickListener, OnGesture
 			img = exchange(cards.getCard(), img);
 			gridAdapter.notifyDataSetChanged();
 			scores.setText(cards.getScore() + "");
+			sp = this.getSharedPreferences("august", MODE_PRIVATE);
+			bests.setText(sp.getInt("best", 0) + "");
+			win.setText(R.string.activity_main_playing);
 			break;
 		default:
 			break;
@@ -276,12 +280,14 @@ public class MainActivity extends Activity implements OnClickListener, OnGesture
 				sp = this.getSharedPreferences("august", MODE_PRIVATE);
 				if(sp.getInt("best", 0) < cards.getScore())
 					sp.edit().putInt("best", cards.getScore()).commit();
+				win.setText(R.string.activity_main_win);
 			}
-			else if(cards.whetherFailed() == false)
+			else if(cards.whetherFailed() == true)
 			{
 				sp = this.getSharedPreferences("august", MODE_PRIVATE);
 				if(sp.getInt("best", 0) < cards.getScore())
 					sp.edit().putInt("best", cards.getScore()).commit();
+				win.setText(R.string.activity_main_failed);
 			}
 			return false;
 		}
@@ -321,6 +327,8 @@ public class MainActivity extends Activity implements OnClickListener, OnGesture
 		gridAdapter = new GridAdapter(con, img);
 		gridView.setAdapter(gridAdapter);
 		scores.setText(cards.getScore() + "");
+		sp = this.getSharedPreferences("august", MODE_PRIVATE);
+		bests.setText(sp.getInt("best", 0) + "");
 	}
 	
 	@Override
