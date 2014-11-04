@@ -19,7 +19,7 @@
             android:layout_gravity="left"
             android:layout_marginRight="10dp"
             android:text="@string/activity_main_title"
-            android:textSize="30sp"
+            android:textSize="34sp"
             android:textColor="@color/white"
             android:textStyle="bold" />
 		<LinearLayout
@@ -36,7 +36,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_gravity="center"
 		        android:text="@string/activity_main_score"
-		        android:textSize="15sp"
+		        android:textSize="16sp"
 		        android:textColor="@color/pink"
 		        android:textStyle="bold" />
 		    <TextView
@@ -45,7 +45,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_gravity="center"
 		        android:text="@string/zero"
-		        android:textSize="15sp"
+		        android:textSize="16sp"
 		        android:textColor="@color/pink"
 		        android:textStyle="bold" />
 		</LinearLayout>
@@ -63,7 +63,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_gravity="center"
 		        android:text="@string/activity_main_best"
-		        android:textSize="15sp"
+		        android:textSize="16sp"
 		        android:textColor="@color/pink"
 		        android:textStyle="bold" />
 		    <TextView
@@ -72,7 +72,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_gravity="center"
 		        android:text="@string/zero"
-		        android:textSize="15sp"
+		        android:textSize="16sp"
 		        android:textColor="@color/pink"
 		        android:textStyle="bold" />
 		</LinearLayout>
@@ -104,7 +104,7 @@
 		    android:layout_marginRight="5dp"
 		    android:gravity="center_vertical"
 		    android:text="@string/activity_main_annoncement"
-		    android:textSize="20sp"
+		    android:textSize="22sp"
 		    android:textColor="@color/white"
 		    android:textStyle="bold" />
     	<Button
@@ -116,7 +116,7 @@
         	android:layout_marginLeft="5dp"
         	android:background="@drawable/button_start"
         	android:text="@string/activity_main_restart"
-        	android:textSize="20sp"
+        	android:textSize="22sp"
         	android:textColor="@color/white"
         	android:gravity="center" />
     </LinearLayout>
@@ -124,12 +124,13 @@
         android:id="@+id/activity_main_whetherwin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:text="@string/activity_main_playing"
         android:textSize="40sp"
         android:textColor="@color/white"
         android:layout_above="@id/activity_main_grid"
+        android:layout_below="@id/activity_main_ll2"
         android:textStyle="bold" />
 </RelativeLayout>
