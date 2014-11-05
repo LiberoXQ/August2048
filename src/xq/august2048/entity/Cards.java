@@ -42,50 +42,93 @@ public class Cards implements Serializable
 	
 	public void stepLeft()
 	{
+		int[] cache = new int[4];
 		int[] temp = new int[4];
+		int[] tmp = new int[4];
 		int[][] last = new int[4][];
 		int point = 0;
-//		boolean flag = false;
+		
 		for(int i = 0; i < 4; i++)
 		{
 			point = 0;
-//			flag = false;
 			last[i] = new int[4];
+			//The Zero Time
 			for(int j = 0; j < 4; j++)
 			{
 				last[i][j] = card[i][j];
-//				if(flag == false)
-//				{
-					if(card[i][j] == 0)
-						continue;
-					else if(point == 0)
-					{
-						temp[point] = card[i][j];
-						point++;
-					}
-					else if(temp[point - 1] == card[i][j])
-					{
-						temp[point - 1]++;
-//						flag = true;
-					}
-					else
-					{
-						temp[point] = card[i][j];
-						point++;
-					}
-//				}
-//				else
-//				{
-//					temp[point] = card[i][j];
-//					point++;
-//				}
+				if(card[i][j] == 0)
+					continue;
+				else if(point == 0)
+				{
+					cache[point] = card[i][j];
+					point++;
+				}
+				else if(cache[point - 1] == card[i][j])
+				{
+					cache[point - 1]++;
+				}
+				else
+				{
+					cache[point] = card[i][j];
+					point++;
+				}
 			}
+			
+			point = 3;
+			//The First Time
+			for(int j = 3; j >= 0; j--)
+			{
+//				last[i][j] = card[i][j];
+				if(cache[j] == 0)
+					continue;
+				else if(point == 3)
+				{
+					temp[point] = cache[j];
+					point--;
+				}
+				else if(temp[point + 1] == cache[j])
+				{
+					temp[point + 1]++;
+				}
+				else
+				{
+					temp[point] = cache[j];
+					point--;
+				}
+			}
+			
+			point = 0;
+			//The Second Time
 			for(int j = 0; j < 4; j++)
 			{
-				card[i][j] = temp[j];
+				if(temp[j] == 0)
+					continue;
+				else if(point == 0)
+				{
+					tmp[point] = temp[j];
+					point++;
+				}
+				else if(tmp[point - 1] == temp[j])
+				{
+					tmp[point - 1]++;
+				}
+				else
+				{
+					tmp[point] = temp[j];
+					point++;
+				}
+			}
+			
+			//Copy
+			for(int j = 0; j < 4; j++)
+			{
+				card[i][j] = tmp[j];
+				cache[j] = 0;
 				temp[j] = 0;
+				tmp[j] = 0;
 			}
 		}
+		
 		boolean change = false;
 		boolean full = true;
 		for(int i = 0; i < 4; i++)
@@ -107,50 +150,93 @@ public class Cards implements Serializable
 	
 	public void stepRight()
 	{
+		int[] cache = new int[4];
 		int[] temp = new int[4];
+		int[] tmp = new int[4];
 		int point = 0;
-//		boolean flag = false;
 		int[][] last = new int[4][];
+		
 		for(int i = 0; i < 4; i++)
 		{
 			point = 3;
-//			flag = false;
 			last[i] = new int[4];
+			//The Zero Time
 			for(int j = 3; j >= 0; j--)
 			{
 				last[i][j] = card[i][j];
-//				if(flag == false)
-//				{
-					if(card[i][j] == 0)
-						continue;
-					else if(point == 3)
-					{
-						temp[point] = card[i][j];
-						point--;
-					}
-					else if(temp[point + 1] == card[i][j])
-					{
-						temp[point + 1]++;
-//						flag = true;
-					}
-					else
-					{
-						temp[point] = card[i][j];
-						point--;
-					}
-//				}
-//				else
-//				{
-//					temp[point] = card[i][j];
-//					point--;
-//				}
+				if(card[i][j] == 0)
+					continue;
+				else if(point == 3)
+				{
+					cache[point] = card[i][j];
+					point--;
+				}
+				else if(cache[point + 1] == card[i][j])
+				{
+					cache[point + 1]++;
+				}
+				else
+				{
+					cache[point] = card[i][j];
+					point--;
+				}
 			}
+			
+			point = 0;
+			//The First Time
+			for(int j = 0; j < 4; j++)
+			{
+//				last[i][j] = card[i][j];
+				if(cache[j] == 0)
+					continue;
+				else if(point == 0)
+				{
+					temp[point] = cache[j];
+					point++;
+				}
+				else if(temp[point - 1] == cache[j])
+				{
+					temp[point - 1]++;
+				}
+				else
+				{
+					temp[point] = cache[j];
+					point++;
+				}
+			}
+			
+			point = 3;
+			//The Second Time
 			for(int j = 3; j >= 0; j--)
 			{
-				card[i][j] = temp[j];
+				if(temp[j] == 0)
+					continue;
+				else if(point == 3)
+				{
+					tmp[point] = temp[j];
+					point--;
+				}
+				else if(tmp[point + 1] == temp[j])
+				{
+					tmp[point + 1]++;
+				}
+				else
+				{
+					tmp[point] = temp[j];
+					point--;
+				}
+			}
+			
+			//Copy
+			for(int j = 3; j >= 0; j--)
+			{
+				card[i][j] = tmp[j];
+				cache[j] = 0;
 				temp[j] = 0;
+				tmp[j] = 0;
 			}
 		}
+		
 		boolean change = false;
 		boolean full = true;
 		for(int i = 0; i < 4; i++)
@@ -172,50 +258,93 @@ public class Cards implements Serializable
 	
 	public void stepUp()
 	{
+		int[] cache = new int[4];
 		int[] temp = new int[4];
+		int[] tmp = new int[4];
 		int point = 0;
-//		boolean flag = false;
 		int[][] last = new int[4][];
+		
 		for(int i = 0; i < 4; i++)
 		{
 			point = 0;
-//			flag = false;
 			last[i] = new int[4];
+			//The Zero Time
 			for(int j = 0; j < 4; j++)
 			{
 				last[i][j] = card[i][j];
-//				if(flag == false)
-//				{
-					if(card[j][i] == 0)
-						continue;
-					else if(point == 0)
-					{
-						temp[point] = card[j][i];
-						point++;
-					}
-					else if(temp[point - 1] == card[j][i])
-					{
-						temp[point - 1]++;
-//						flag = true;
-					}
-					else
-					{
-						temp[point] = card[j][i];
-						point++;
-					}
-//				}
-//				else
-//				{
-//					temp[point] = card[j][i];
-//					point++;
-//				}
+				if(card[j][i] == 0)
+					continue;
+				else if(point == 0)
+				{
+					cache[point] = card[j][i];
+					point++;
+				}
+				else if(cache[point - 1] == card[j][i])
+				{
+					cache[point - 1]++;
+				}
+				else
+				{
+					cache[point] = card[j][i];
+					point++;
+				}
 			}
+			
+			point = 3;
+			//The First Time
+			for(int j = 3; j >= 0; j--)
+			{
+//				last[i][j] = card[i][j];
+				if(cache[j] == 0)
+					continue;
+				else if(point == 3)
+				{
+					temp[point] = cache[j];
+					point--;
+				}
+				else if(temp[point + 1] == cache[j])
+				{
+					temp[point + 1]++;
+				}
+				else
+				{
+					temp[point] = cache[j];
+					point--;
+				}
+			}
+			
+			point = 0;
+			//The Second Time
 			for(int j = 0; j < 4; j++)
 			{
-				card[j][i] = temp[j];
+				if(temp[j] == 0)
+					continue;
+				else if(point == 0)
+				{
+					tmp[point] = temp[j];
+					point++;
+				}
+				else if(tmp[point - 1] == temp[j])
+				{
+					tmp[point - 1]++;
+				}
+				else
+				{
+					tmp[point] = temp[j];
+					point++;
+				}
+			}
+			
+			//Copy
+			for(int j = 0; j < 4; j++)
+			{
+				card[j][i] = tmp[j];
+				cache[j] = 0;
 				temp[j] = 0;
+				tmp[j] = 0;
 			}
 		}
+		
 		boolean change = false;
 		boolean full = true;
 		for(int i = 0; i < 4; i++)
@@ -237,50 +366,93 @@ public class Cards implements Serializable
 	
 	public void stepDown()
 	{
+		int[] cache = new int[4];
 		int[] temp = new int[4];
+		int[] tmp = new int[4];
 		int point = 0;
-//		boolean flag = false;
 		int[][] last = new int[4][];
+		
 		for(int i = 0; i < 4; i++)
 		{
 			point = 3;
-//			flag = false;
 			last[i] = new int[4];
+			//The Zero Time
 			for(int j = 3; j >= 0; j--)
 			{
 				last[i][j] = card[i][j];
-//				if(flag == false)
-//				{
-					if(card[j][i] == 0)
-						continue;
-					else if(point == 3)
-					{
-						temp[point] = card[j][i];
-						point--;
-					}
-					else if(temp[point + 1] == card[j][i])
-					{
-						temp[point + 1]++;
-//						flag = true;
-					}
-					else
-					{
-						temp[point] = card[j][i];
-						point--;
-					}
-//				}
-//				else
-//				{
-//					temp[point] = card[j][i];
-//					point--;
-//				}
+				if(card[j][i] == 0)
+					continue;
+				else if(point == 3)
+				{
+					cache[point] = card[j][i];
+					point--;
+				}
+				else if(cache[point + 1] == card[j][i])
+				{
+					cache[point + 1]++;
+				}
+				else
+				{
+					cache[point] = card[j][i];
+					point--;
+				}
 			}
+			
+			point = 0;
+			//The First Time
+			for(int j = 0; j < 4; j++)
+			{
+//				last[i][j] = card[i][j];
+				if(cache[j] == 0)
+					continue;
+				else if(point == 0)
+				{
+					temp[point] = cache[j];
+					point++;
+				}
+				else if(temp[point - 1] == cache[j])
+				{
+					temp[point - 1]++;
+				}
+				else
+				{
+					temp[point] = cache[j];
+					point++;
+				}
+			}
+			
+			point = 3;
+			//The Second Time
 			for(int j = 3; j >= 0; j--)
 			{
-				card[j][i] = temp[j];
+				if(temp[j] == 0)
+					continue;
+				else if(point == 3)
+				{
+					tmp[point] = temp[j];
+					point--;
+				}
+				else if(tmp[point + 1] == temp[j])
+				{
+					tmp[point + 1]++;
+				}
+				else
+				{
+					tmp[point] = temp[j];
+					point--;
+				}
+			}
+			
+			//Copy
+			for(int j = 3; j >= 0; j--)
+			{
+				card[j][i] = tmp[j];
+				cache[j] = 0;
 				temp[j] = 0;
+				tmp[j] = 0;
 			}
 		}
+		
 		boolean change = false;
 		boolean full = true;
 		for(int i = 0; i < 4; i++)
